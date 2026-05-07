@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { ReligionEntity } from './entities/religion.entity';
+import { NoteEntity } from './entities/note.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppLogger } from 'src/common/logger/app-logger.service';
 import { BaseService } from 'src/common/services/base.service';
 
 @Injectable()
-export class ReligionService extends BaseService<ReligionEntity> {
+export class NoteService extends BaseService<NoteEntity> {
   constructor(
-    @InjectRepository(ReligionEntity)
-    private readonly religionRepository: Repository<ReligionEntity>,
+    @InjectRepository(NoteEntity)
+    private readonly noteRepository: Repository<NoteEntity>,
     protected readonly logger: AppLogger,
   ) {
-    super(religionRepository, logger);
-    this.logger.setContext(ReligionService.name);
+    super(noteRepository, logger);
+    this.logger.setContext(NoteService.name);
   }
 }

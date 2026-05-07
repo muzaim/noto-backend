@@ -10,6 +10,7 @@ import { CommonModule } from './common/common.module';
 import { ReligionModule } from './master-data/religions/religion.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { NoteModule } from './master-data/note/note.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { UsersModule } from './users/users.module';
     ReligionModule,
     AuthModule,
     UsersModule,
+    NoteModule,
   ],
   providers: [AppService],
   controllers: [AppController],
