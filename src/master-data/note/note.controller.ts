@@ -18,6 +18,7 @@ import { GetTableDto } from 'src/helper/dto/general.dto';
 import { UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Master Data - Note')
@@ -36,11 +37,11 @@ export class NoteController {
     action: AuditAction.CREATE,
     description: 'Create a new note record',
   })
-  async create(@Req() req: any, @Body() payload: CreateNoteDTO) {
+  async create(@Req() req: RequestWithUser, @Body() payload: CreateNoteDTO) {
     const result = await this.noteService.create(
       {
         ...payload,
-        user_id: req.user.userId,
+        userId: req.user.userId,
       },
       req.user.userId,
     );
