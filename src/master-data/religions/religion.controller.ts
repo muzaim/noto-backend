@@ -14,7 +14,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Audit } from 'src/common/decorators/audit.decorator';
 import { AuditAction } from 'src/common/entities/audit-trail.entity';
 import { GetTableDto } from 'src/helper/dto/general.dto';
+import { UseGuards } from '@nestjs/common';
 
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+
+@UseGuards(JwtAuthGuard)
 @ApiTags('Master Data - Religions')
 @Controller('/master-data/religions')
 export class ReligionController {
@@ -115,7 +119,7 @@ export class ReligionController {
     description: 'Update a religion record by ID',
   })
   async update(@Param('id') id: number, @Body() payload: CreateReligionDTO) {
-    const result = await this.religionService.update(id, payload, 1);
+    await this.religionService.update(id, payload, 1);
     return {
       status_code: 200,
       message: 'Master data religion record updated successfully',

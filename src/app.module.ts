@@ -8,6 +8,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'crypto';
 import { CommonModule } from './common/common.module';
 import { ReligionModule } from './master-data/religions/religion.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -54,6 +56,8 @@ import { ReligionModule } from './master-data/religions/religion.module';
 
     CommonModule,
     ReligionModule,
+    AuthModule,
+    UsersModule,
   ],
   providers: [AppService],
   controllers: [AppController],

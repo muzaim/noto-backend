@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Unique,
-  ViewColumn,
   Index,
 } from 'typeorm';
 
