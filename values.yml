@@ -1,0 +1,81 @@
+# Default values for myjob-chart
+application:
+  name: 'hris-backend'
+
+replicaCount: 1
+
+image:
+  repository: ''
+  tag: 'latest'
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: smf-harbor
+
+# Settings for the Service
+service:
+  type: ClusterIP
+  port: 8181
+
+# Settings for the Ingress
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+  hosts:
+    - host: nginx-example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Your resource requests and limits
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 300m
+    memory: 512Mi
+
+# Your Probes
+livenessProbe:
+  tcpSocket:
+    port: 8181
+  initialDelaySeconds: 30
+  timeoutSeconds: 10
+  periodSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8181
+  initialDelaySeconds: 20
+  timeoutSeconds: 10
+  periodSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8181
+  failureThreshold: 30
+  periodSeconds: 5
+
+# Your Volume for the timezone
+volumes:
+  - name: localtime
+    hostPath:
+      path: /usr/share/zoneinfo/Asia/Jakarta
+
+volumeMounts:
+  - name: localtime
+    mountPath: /etc/localtime
+
+redis:
+  enabled: false
+  image:
+    repository: 'redis'
+    tag: 'alpine'
+
+postgresql:
+  enabled: false

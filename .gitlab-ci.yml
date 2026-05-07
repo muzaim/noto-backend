@@ -1,0 +1,4 @@
+include:
+  - project: Infra/supply-chain
+    ref: feat/create-pipeline
+    file: template/tanzu_template.yml

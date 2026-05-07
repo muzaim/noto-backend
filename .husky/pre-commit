@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 1. Cek aturan kode dulu (cepet)
+# npm run lint
+
+# 2. Kalau lint aman, baru cek logic (pake test yang ringan aja)
+# Biasanya test:short itu buat unit test doang, bukan E2E yang berat
+# npm run test:short

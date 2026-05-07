@@ -1,0 +1,21 @@
+Berikut list collection API untuk master data :
+
+1. Agama ->http://localhost:3000/agama
+2. Jenis cuti -> http://localhost:3000/kategori-cuti
+3. detail cuti (yang udah ada periode, jumlah hari, dll) -> http://localhost:3000/jenis-cuti
+3. master data cuti -> http://localhost:3000/master-data-cuti
+4. Status Perkawinan -> http://localhost:3000/status-perkawinan
+5. Pekerjaan -> http://localhost:3000/pekerjaan
+6. Status Kehadiran -> http://localhost:3000/status-kehadiran
+7. Jenjang Pendidikan -> http://localhost:3000/jenjang-pendidikan
+8. Status Pengunduran Diri -> http://localhost:3000/status-pengunduran-diri
+9. Jenis Dokumen -> http://localhost:3000/jenis-dokumen
+10. Komponen Penggajian -> http://localhost:3000/komponen-penggajian (kayak DPLK, Gaji Pokok, dll)
+11. Jenis Peringatan -> http://localhost:3000/jenis-peringatan
+12. Master Data Peringatan -> http://localhost:3000/master-data-peringatan
+12. Detail peringatan (persen komponen) -> http://localhost:3000/master-peringatan-detail
+13. Mata Uang -> http://localhost:3000/mata-uang
+14. user -> Belum
+14. Kalender libur 
+-> /periode-libur (untuk tahun, jumlah libur, status) -> http://localhost:3000/periode-libur
+-> /hari-libur (untuk detail hari libur) -> http://localhost:3000/hari-libur

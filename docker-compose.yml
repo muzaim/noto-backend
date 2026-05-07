@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  backend_vms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_hris
+    ports:
+      - '8181:8181'
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
