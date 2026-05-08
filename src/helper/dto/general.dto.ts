@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
 
 export enum SortType {
   ASC = 'ASC',
@@ -30,10 +30,10 @@ export class GetTableDto {
 
   @IsOptional()
   status?: string;
-  
+
   @IsOptional()
   @IsNumber()
-  periode?: number
+  periode?: number;
 }
 
 export class MetaTable {

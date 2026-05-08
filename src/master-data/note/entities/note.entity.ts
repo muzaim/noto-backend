@@ -6,8 +6,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ActiveStatus } from 'src/database/enumlist';
 
-@Entity('notes')
+@Entity('mst_notes')
 export class NoteEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,22 +21,29 @@ export class NoteEntity {
   @Column()
   title: string;
 
-  @Column({
+  @Column({ default: ActiveStatus.Active })
+  status: ActiveStatus;
+
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    select: false,
     nullable: true,
+    name: 'deleted_at',
   })
-  createdBy: number;
+  deletedAt?: Date;
 
-  @Column({
-    nullable: true,
-  })
-  updatedBy: number;
+  @Column({ default: null, nullable: true, name: 'created_by' })
+  createdBy: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @Column({ default: null, nullable: true, name: 'updated_by' })
+  updatedBy: string;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @Column({ default: null, select: true, nullable: true, name: 'deleted_by' })
+  deletedBy: string;
 }

@@ -77,80 +77,80 @@ export class NoteController {
   }
 
   @Get('/options')
-  @ApiOperation({ summary: 'Get active religion options' })
+  @ApiOperation({ summary: 'Get active note options' })
   @ApiResponse({
     status: 200,
-    description: 'Active religion options retrieved successfully',
+    description: 'Active note options retrieved successfully',
   })
   @Audit({
-    tableName: 'mst_religions',
+    tableName: 'mst_notes',
     action: AuditAction.VIEW,
-    description: 'Retrieve active religion options',
+    description: 'Retrieve active note options',
   })
   async findActiveList() {
     const result = await this.noteService.findActiveList();
     return {
       status_code: 200,
-      message: 'Active religion options retrieved successfully',
+      message: 'Active note options retrieved successfully',
       result: result,
     };
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Get a religion record by ID' })
+  @ApiOperation({ summary: 'Get a note record by ID' })
   @ApiResponse({
     status: 200,
-    description: 'Master data religion record retrieved successfully',
+    description: 'Master data note record retrieved successfully',
   })
   @Audit({
-    tableName: 'mst_religions',
+    tableName: 'mst_notes',
     action: AuditAction.VIEW,
-    description: 'Retrieve a religion record by ID',
+    description: 'Retrieve a note record by ID',
   })
   async findOne(@Param('id') id: number) {
     const result = await this.noteService.findOne(id);
     return {
       status_code: 200,
-      message: 'Master data religion record retrieved successfully',
+      message: 'Master data note record retrieved successfully',
       result: result,
     };
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Update a religion record by ID' })
+  @ApiOperation({ summary: 'Update a note record by ID' })
   @ApiResponse({
     status: 200,
-    description: 'Master data religion record updated successfully',
+    description: 'Master data note record updated successfully',
   })
   @Audit({
-    tableName: 'mst_religions',
+    tableName: 'mst_notes',
     action: AuditAction.UPDATE,
-    description: 'Update a religion record by ID',
+    description: 'Update a note record by ID',
   })
   async update(@Param('id') id: number, @Body() payload: CreateNoteDTO) {
     await this.noteService.update(id, payload, 1);
     return {
       status_code: 200,
-      message: 'Master data religion record updated successfully',
+      message: 'Master data note record updated successfully',
     };
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Delete a religion record by ID' })
+  @ApiOperation({ summary: 'Delete a note record by ID' })
   @ApiResponse({
     status: 200,
-    description: 'Master data religion record deleted successfully',
+    description: 'Master data note record deleted successfully',
   })
   @Audit({
-    tableName: 'mst_religions',
+    tableName: 'mst_notes',
     action: AuditAction.DELETE,
-    description: 'Delete a religion record by ID',
+    description: 'Delete a note record by ID',
   })
   async remove(@Param('id') id: number) {
     const result = await this.noteService.remove(id, 1);
     return {
       status_code: 200,
-      message: 'Master data religion record deleted successfully',
+      message: 'Master data note record deleted successfully',
       result: result,
     };
   }

@@ -11,6 +11,7 @@ import { ReligionModule } from './master-data/religions/religion.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { NoteModule } from './master-data/note/note.module';
+import { BlcokModule } from './master-data/block/block.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { NoteModule } from './master-data/note/note.module';
     AuthModule,
     UsersModule,
     NoteModule,
+    BlcokModule,
   ],
   providers: [AppService],
   controllers: [AppController],

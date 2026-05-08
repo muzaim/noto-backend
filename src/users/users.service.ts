@@ -4,13 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   findByEmail(email: string) {
@@ -21,7 +21,7 @@ export class UsersService {
     });
   }
 
-  create(data: Partial<User>) {
+  create(data: Partial<UserEntity>) {
     const user = this.userRepository.create(data);
 
     return this.userRepository.save(user);

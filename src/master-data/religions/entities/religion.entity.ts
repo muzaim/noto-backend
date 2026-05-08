@@ -40,12 +40,12 @@ export class ReligionEntity {
   })
   deletedAt?: Date;
 
-  @Column({ default: null, nullable: false, name: 'created_by' })
+  @Column({ default: null, nullable: true, name: 'created_by' })
   createdBy: string;
 
-  @Column({ default: null, nullable: false, name: 'updated_by' })
+  @Column({ default: null, nullable: true, name: 'updated_by' })
   updatedBy: string;
 
-  @Column({ default: null, select: false, nullable: true, name: 'deleted_by' })
+  @Column({ default: null, select: true, nullable: true, name: 'deleted_by' })
   deletedBy: string;
 }
