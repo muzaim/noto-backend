@@ -43,8 +43,9 @@ export class AuthService {
     };
   }
 
-  async login(@Body() loginDto: LoginDto) {
+  async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
+
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
@@ -62,9 +63,10 @@ export class AuthService {
       email: user.email,
     };
 
-    return {
-      access_token: await this.jwtService.signAsync(payload),
+    const access_token = await this.jwtService.signAsync(payload);
 
+    return {
+      access_token,
       user: {
         id: user.id,
         name: user.name,

@@ -15,4 +15,16 @@ export class NoteService extends BaseService<NoteEntity> {
     super(noteRepository, logger);
     this.logger.setContext(NoteService.name);
   }
+
+  async findByUserId(userId: number) {
+    return await this.noteRepository.find({
+      where: {
+        userId,
+      },
+      relations: ['blocks'],
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
 }

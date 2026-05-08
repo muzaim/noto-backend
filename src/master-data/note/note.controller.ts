@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
   Req,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
@@ -14,9 +13,7 @@ import { CreateNoteDTO } from './dto/create-note.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Audit } from 'src/common/decorators/audit.decorator';
 import { AuditAction } from 'src/common/entities/audit-trail.entity';
-import { GetTableDto } from 'src/helper/dto/general.dto';
 import { UseGuards } from '@nestjs/common';
-
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
@@ -64,15 +61,13 @@ export class NoteController {
     action: AuditAction.VIEW,
     description: 'Retrieve all note records',
   })
-  async findAll(@Query() query: GetTableDto) {
-    const result = await this.noteService.findAll(query, [], null, [
-      'name',
-      'description',
-    ]);
+  async findAll(@Req() req: RequestWithUser) {
+    const result = await this.noteService.findByUserId(req.user.userId);
+
     return {
       status_code: 200,
       message: 'Master data note records retrieved successfully',
-      result: result,
+      result,
     };
   }
 

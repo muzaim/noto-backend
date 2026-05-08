@@ -1,6 +1,6 @@
-import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common'; // Tambahkan ClassSerializerInterceptor
+import { ValidationPipe } from '@nestjs/common'; // Tambahkan ClassSerializerInterceptor
 import { Logger } from 'nestjs-pino';
-import { NestFactory, Reflector } from '@nestjs/core'; // Tambahkan Reflector
+import { NestFactory } from '@nestjs/core'; // Tambahkan Reflector
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path/win32';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -8,6 +8,7 @@ import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { AppLogger } from './common/logger/app-logger.service';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   // Buat Nest Express Application dengan opsi bufferLogs
@@ -32,7 +33,6 @@ async function bootstrap() {
       } else if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        // CORS violations will appear in pino-http access logs automatically
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -40,6 +40,7 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.use(cookieParser());
   // ======== Static Assets & Views ========
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
@@ -59,7 +60,10 @@ async function bootstrap() {
         'https://github.com/yuusufyan',
         'yuusufyan13@gmail.com',
       )
-      .addServer(`https://newhrisbe-dev.smf-indonesia.co.id/api/v1`, 'Development Server')
+      .addServer(
+        `https://newhrisbe-dev.smf-indonesia.co.id/api/v1`,
+        'Development Server',
+      )
       .addServer(`http://localhost:${PORT}/api/v1`, 'Local Server')
       .build();
 
@@ -89,7 +93,7 @@ async function bootstrap() {
 
   // ======== Global Prefix ========
   // app.setGlobalPrefix('/api/v1');
-  app.setGlobalPrefix('api/v1', {exclude: ['health'],});
+  app.setGlobalPrefix('api/v1', { exclude: ['health'] });
 
   // ======== Start Server ========
   await app.listen(PORT, () => {

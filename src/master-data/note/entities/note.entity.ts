@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ActiveStatus } from 'src/database/enumlist';
+import { BlcokEntity } from 'src/master-data/block/entities/block.entity';
 
 @Entity('mst_notes')
 export class NoteEntity {
@@ -23,6 +25,9 @@ export class NoteEntity {
 
   @Column({ default: ActiveStatus.Active })
   status: ActiveStatus;
+
+  @OneToMany(() => BlcokEntity, (block) => block.note)
+  blocks: BlcokEntity[];
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
