@@ -2,6 +2,7 @@
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -57,4 +58,11 @@ export class CreateBlockDto {
   @IsOptional()
   @IsNumber()
   orderIndex?: number;
+
+  @ApiPropertyOptional({
+    example: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  checked?: boolean;
 }

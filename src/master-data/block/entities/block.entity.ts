@@ -12,6 +12,7 @@ import {
 import { ActiveStatus } from 'src/database/enumlist';
 import { NoteEntity } from 'src/master-data/note/entities/note.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { IsBoolean, IsOptional } from 'class-validator';
 
 export enum BlockType {
   TEXT = 'text',
@@ -46,6 +47,10 @@ export class BlcokEntity {
   })
   @JoinColumn({ name: 'note_id' })
   note: NoteEntity;
+
+  @IsOptional()
+  @IsBoolean()
+  checked?: boolean;
 
   @Column({
     name: 'parent_id',
