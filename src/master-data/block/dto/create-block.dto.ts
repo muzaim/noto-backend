@@ -26,13 +26,13 @@ export class CreateBlockDto {
   })
   userId: number;
 
-  // @ApiPropertyOptional({
-  //   example: 1,
-  //   description: 'Parent block ID',
-  // })
-  // @IsOptional()
-  // @IsNumber()
-  // parentId?: number;
+  @ApiPropertyOptional({
+    example: 1,
+    description: 'Parent block ID',
+  })
+  @IsOptional()
+  @IsNumber()
+  parentId?: number;
 
   @ApiProperty({
     example: BlockType.TEXT,

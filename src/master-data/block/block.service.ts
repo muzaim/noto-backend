@@ -21,6 +21,37 @@ export class BlockService extends BaseService<BlcokEntity> {
     this.logger.setContext(BlockService.name);
   }
 
+  // async create(
+  //   payload: CreateBlockDto & {
+  //     userId: number;
+  //   },
+  //   userId: number,
+  // ) {
+  //   const lastBlock = await this.blockRepository.findOne({
+  //     where: {
+  //       noteId: payload.noteId,
+  //     },
+  //     order: {
+  //       orderIndex: 'DESC',
+  //     },
+  //   });
+
+  //   const orderIndex = lastBlock ? lastBlock.orderIndex + 1 : 0;
+
+  //   const result = await super.create(
+  //     {
+  //       ...payload,
+  //       parentId: null,
+  //       orderIndex,
+  //     },
+  //     userId,
+  //   );
+
+  //   this.noteGateway.emitNotesUpdate();
+
+  //   return result;
+  // }
+
   async create(
     payload: CreateBlockDto & {
       userId: number;
@@ -31,6 +62,7 @@ export class BlockService extends BaseService<BlcokEntity> {
       where: {
         noteId: payload.noteId,
       },
+
       order: {
         orderIndex: 'DESC',
       },
@@ -41,7 +73,9 @@ export class BlockService extends BaseService<BlcokEntity> {
     const result = await super.create(
       {
         ...payload,
-        parentId: null,
+
+        parentId: payload.parentId ?? null,
+
         orderIndex,
       },
       userId,
