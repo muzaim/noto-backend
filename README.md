@@ -1,7 +1,7 @@
 # Noto Backend
 
-Noto Backend adalah REST API untuk aplikasi note bergaya block editor seperti Notion mini version.  
-Backend ini menyediakan authentication, note management, block editor, nested block, realtime websocket, dan audit trail activity.
+Noto Backend is a REST API for a note-taking application inspired by block editor style apps like Notion.  
+This backend provides authentication, note management, block editor features, nested blocks, realtime websocket updates, and audit trail activity.
 
 ---
 
@@ -60,7 +60,7 @@ npm install
 
 # Environment Setup
 
-Buat file `.env`
+Create a `.env` file
 
 ```env
 PORT=3000
@@ -78,7 +78,7 @@ JWT_SECRET=secret
 
 # PostgreSQL Docker
 
-Jika menggunakan Docker:
+If you are using Docker:
 
 ```bash
 docker run --name postgres \
@@ -90,9 +90,9 @@ docker run --name postgres \
 
 ---
 
-# Database Restore
+# Dummy Database
 
-Project ini sudah menyediakan file database backup sehingga tidak perlu setup database manual.
+If you want to use a dummy database, this project already provides one.
 
 Restore database:
 
@@ -100,11 +100,11 @@ Restore database:
 docker exec -i postgres psql -U postgres -d noto < noto.sql
 ```
 
-Pastikan:
+Make sure:
 
-- Container PostgreSQL sudah berjalan
-- Database `noto` sudah dibuat
-- File `noto.sql` tersedia di root project
+- PostgreSQL container is already running
+- Database `noto` has been created
+- File `noto.sql` exists in the project root
 
 ---
 
@@ -114,7 +114,7 @@ Pastikan:
 npm run start:dev
 ```
 
-Backend berjalan di:
+Backend will run on:
 
 ```txt
 http://localhost:8181
@@ -128,19 +128,22 @@ http://localhost:8181
 http://localhost:8181/api/v1
 ```
 
-# Swagger
+---
+
+# Swagger Documentation
 
 ```txt
 http://localhost:8181/docs
 ```
+
 ---
 
 # Realtime Features
 
-Menggunakan websocket untuk:
+Using websocket for:
 
-- Realtime note update
-- Synchronize antar tab/session
+- Realtime note updates
+- Synchronization between tabs/sessions
 - Live workspace refresh
 - Audit trail refresh
 
@@ -152,6 +155,8 @@ Menggunakan websocket untuk:
 Email    : admin@yopmail.com
 Password : 123456
 ```
+
+---
 
 # Author
 
