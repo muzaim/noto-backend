@@ -116,6 +116,12 @@ export class BlockService extends BaseService<BlcokEntity> {
     return true;
   }
   async delete(id: number, userId: number) {
+    const block = await this.blockRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
     await this.blockRepository.update(id, {
       deletedBy: userId.toString(),
     });
@@ -124,6 +130,6 @@ export class BlockService extends BaseService<BlcokEntity> {
 
     this.noteGateway.emitNotesUpdate();
 
-    return true;
+    return block;
   }
 }

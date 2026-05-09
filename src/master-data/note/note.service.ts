@@ -51,17 +51,42 @@ export class NoteService extends BaseService<NoteEntity> {
   }
 
   async updateNote(id: number, payload: CreateNoteDTO, userId: number) {
+    const oldData = await this.noteRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
     await this.noteRepository.update(id, {
       ...payload,
+
       updatedBy: userId.toString(),
+    });
+
+    const newData = await this.noteRepository.findOne({
+      where: {
+        id,
+      },
     });
 
     this.noteGateway.emitNotesUpdate();
 
-    return true;
+    return {
+      id,
+
+      oldData,
+
+      newData,
+    };
   }
 
   async delete(id: number, userId: number) {
+    const note = await this.noteRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
     await this.noteRepository.update(id, {
       deletedBy: userId.toString(),
     });
@@ -70,7 +95,7 @@ export class NoteService extends BaseService<NoteEntity> {
 
     this.noteGateway.emitNotesUpdate();
 
-    return true;
+    return note;
   }
 
   async getAuditTrail(userId: number) {
@@ -79,11 +104,19 @@ export class NoteService extends BaseService<NoteEntity> {
     return {
       ...result,
 
-      data: result.data.filter((item) =>
-        [AuditAction.CREATE, AuditAction.UPDATE, AuditAction.DELETE].includes(
-          item.action,
-        ),
-      ),
+      data: result.data
+        .filter((item) =>
+          [AuditAction.CREATE, AuditAction.UPDATE, AuditAction.DELETE].includes(
+            item.action,
+          ),
+        )
+        .map((item) => ({
+          ...item,
+
+          description: `${item.user?.name ?? 'User'} ${item.description.toLowerCase()}`,
+
+          user: undefined,
+        })),
     };
   }
 }

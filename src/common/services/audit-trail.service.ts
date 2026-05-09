@@ -46,9 +46,18 @@ export class AuditTrailService {
 
   async findByUser(userId: number, page = 1, limit = 10) {
     const [data, total] = await this.auditRepository.findAndCount({
-      where: { user_id: userId },
-      order: { created_at: 'DESC' },
+      where: {
+        user_id: userId,
+      },
+
+      relations: ['user'],
+
+      order: {
+        created_at: 'DESC',
+      },
+
       skip: (page - 1) * limit,
+
       take: limit,
     });
 

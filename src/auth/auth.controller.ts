@@ -19,7 +19,11 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() loginDto: LoginDto,
-    @Res({ passthrough: true }) res: Response,
+
+    @Res({
+      passthrough: true,
+    })
+    res: Response,
   ) {
     const result = await this.authService.login(loginDto);
 
@@ -27,18 +31,22 @@ export class AuthController {
       httpOnly: true,
       secure: false,
       sameSite: 'lax',
-      maxAge: 10000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24,
+      // maxAge: 1000 * 10,
     });
 
     return {
-      token: result.access_token,
       user: result.user,
     };
   }
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('access_token');
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false,
+    });
 
     return {
       message: 'Logout success',

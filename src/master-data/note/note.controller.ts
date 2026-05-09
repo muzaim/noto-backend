@@ -98,7 +98,7 @@ export class NoteController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Get a note record by ID' })
+  @ApiOperation({ summary: 'Get a note record' })
   @ApiResponse({
     status: 200,
     description: 'Master data note record retrieved successfully',
@@ -106,7 +106,7 @@ export class NoteController {
   @Audit({
     tableName: 'mst_notes',
     action: AuditAction.VIEW,
-    description: 'Retrieve a note record by ID',
+    description: 'Retrieve a note record',
   })
   async findOne(@Param('id') id: number) {
     const result = await this.noteService.findOne(id);
@@ -118,7 +118,9 @@ export class NoteController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Update a note record by ID' })
+  @ApiOperation({
+    summary: 'Update a note record',
+  })
   @ApiResponse({
     status: 200,
     description: 'Master data note record updated successfully',
@@ -126,18 +128,27 @@ export class NoteController {
   @Audit({
     tableName: 'mst_notes',
     action: AuditAction.UPDATE,
-    description: 'Update a note record by ID',
+    description: 'Update a note record',
   })
-  async update(@Param('id') id: number, @Body() payload: CreateNoteDTO) {
-    await this.noteService.updateNote(id, payload, 1);
+  async update(
+    @Param('id') id: number,
+
+    @Body()
+    payload: CreateNoteDTO,
+  ) {
+    const result = await this.noteService.updateNote(id, payload, 1);
+
     return {
       status_code: 200,
+
       message: 'Master data note record updated successfully',
+
+      result,
     };
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Delete a note record by ID' })
+  @ApiOperation({ summary: 'Delete a note record' })
   @ApiResponse({
     status: 200,
     description: 'Master data note record deleted successfully',
@@ -145,7 +156,7 @@ export class NoteController {
   @Audit({
     tableName: 'mst_notes',
     action: AuditAction.DELETE,
-    description: 'Delete a note record by ID',
+    description: 'Delete a note record',
   })
   async remove(@Param('id') id: number) {
     const result = await this.noteService.delete(id, 1);

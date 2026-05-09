@@ -7,7 +7,6 @@ import databaseConfig from './database/database.config';
 import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'crypto';
 import { CommonModule } from './common/common.module';
-import { ReligionModule } from './master-data/religions/religion.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { NoteModule } from './master-data/note/note.module';
@@ -57,7 +56,6 @@ import { BlcokModule } from './master-data/block/block.module';
     }),
 
     CommonModule,
-    ReligionModule,
     AuthModule,
     UsersModule,
     NoteModule,

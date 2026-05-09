@@ -11,7 +11,8 @@ import { Observable, tap } from 'rxjs';
 import { AUDIT_METADATA_KEY } from '../decorators/audit.decorator';
 import { AuditAction } from '../entities/audit-trail.entity';
 import { AppLogger } from '../logger/app-logger.service';
-import { ReligionEntity } from 'src/master-data/religions/entities/religion.entity';
+import { NoteEntity } from 'src/master-data/note/entities/note.entity';
+import { BlcokEntity } from 'src/master-data/block/entities/block.entity';
 
 @Injectable()
 export class AuditTrailInterceptor implements NestInterceptor {
@@ -27,7 +28,8 @@ export class AuditTrailInterceptor implements NestInterceptor {
     // Inisialisasi Map di dalam constructor untuk menghindari error tipe
     // saat deklarasi.
     this.entityMap = new Map<string, EntityTarget<any>>();
-    this.entityMap.set('mst_religions', ReligionEntity);
+    this.entityMap.set('mst_notes', NoteEntity);
+    this.entityMap.set('mst_notes', BlcokEntity);
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -78,23 +80,93 @@ export class AuditTrailInterceptor implements NestInterceptor {
         });
     }
 
+    // return next.handle().pipe(
+    //   tap(async (responseData) => {
+    //     try {
+    //       if (auditMetadata.action === AuditAction.CREATE) {
+    //         recordId = responseData?.data?.id || null;
+    //       }
+
+    //       let newValues: any = null;
+    //       if (
+    //         auditMetadata.action === AuditAction.CREATE ||
+    //         auditMetadata.action === AuditAction.UPDATE
+    //       ) {
+    //         newValues = request.body;
+    //       } else if (auditMetadata.action === AuditAction.LOGIN) {
+    //         newValues = responseData;
+    //       } else {
+    //         newValues = responseData;
+    //       }
+
+    //       await this.auditService.createAuditLog({
+    //         user_id: user?.userId,
+
+    //         username: user?.username,
+
+    //         table_name: auditMetadata.tableName,
+
+    //         record_id: recordId,
+
+    //         action: auditMetadata.action,
+
+    //         old_values: oldData ? JSON.stringify(oldData) : null,
+
+    //         new_values: newValues ? JSON.stringify(newValues) : null,
+
+    //         ip_address: request.ip,
+
+    //         user_agent: request.get('User-Agent'),
+
+    //         description: auditMetadata.description,
+    //       });
+    //     } catch (error) {
+    //       this.logger.error(
+    //         '[AuditTrailInterceptor] Failed to save audit trail log',
+    //         error instanceof Error ? error.stack : String(error),
+    //       );
+    //     }
+    //   }),
+    // );
+
     return next.handle().pipe(
       tap(async (responseData) => {
         try {
-          if (auditMetadata.action === AuditAction.CREATE) {
-            recordId = responseData?.data?.id || null;
+          const resultData = responseData?.result;
+
+          if (
+            [
+              AuditAction.CREATE,
+              AuditAction.UPDATE,
+              AuditAction.DELETE,
+            ].includes(auditMetadata.action)
+          ) {
+            recordId =
+              resultData?.id ??
+              resultData?.newData?.id ??
+              resultData?.oldData?.id ??
+              request.params.id ??
+              null;
           }
 
+          let oldValues: any = null;
+
           let newValues: any = null;
-          if (
-            auditMetadata.action === AuditAction.CREATE ||
-            auditMetadata.action === AuditAction.UPDATE
-          ) {
-            newValues = request.body;
+
+          if (auditMetadata.action === AuditAction.CREATE) {
+            newValues = resultData;
+          } else if (auditMetadata.action === AuditAction.UPDATE) {
+            oldValues = resultData?.oldData;
+
+            newValues = resultData?.newData;
+          } else if (auditMetadata.action === AuditAction.DELETE) {
+            oldValues = resultData;
+
+            newValues = null;
           } else if (auditMetadata.action === AuditAction.LOGIN) {
-            newValues = responseData;
-          } else {
-            newValues = responseData;
+            newValues = {
+              user: responseData?.user,
+            };
           }
 
           await this.auditService.createAuditLog({
@@ -108,7 +180,7 @@ export class AuditTrailInterceptor implements NestInterceptor {
 
             action: auditMetadata.action,
 
-            old_values: oldData ? JSON.stringify(oldData) : null,
+            old_values: oldValues ? JSON.stringify(oldValues) : null,
 
             new_values: newValues ? JSON.stringify(newValues) : null,
 
@@ -121,6 +193,7 @@ export class AuditTrailInterceptor implements NestInterceptor {
         } catch (error) {
           this.logger.error(
             '[AuditTrailInterceptor] Failed to save audit trail log',
+
             error instanceof Error ? error.stack : String(error),
           );
         }

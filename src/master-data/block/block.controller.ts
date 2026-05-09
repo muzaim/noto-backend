@@ -70,7 +70,7 @@ export class BlockController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Get a block record by ID' })
+  @ApiOperation({ summary: 'Get a block record' })
   @ApiResponse({
     status: 200,
     description: 'Master data block record retrieved successfully',
@@ -78,7 +78,7 @@ export class BlockController {
   @Audit({
     tableName: 'mst_blocks',
     action: AuditAction.VIEW,
-    description: 'Retrieve a block record by ID',
+    description: 'Retrieve a block record',
   })
   async findOne(@Param('id') id: number) {
     const result = await this.blockService.findOne(id);
@@ -90,7 +90,7 @@ export class BlockController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Update a block record by ID' })
+  @ApiOperation({ summary: 'Update a block record' })
   @ApiResponse({
     status: 200,
     description: 'Master data block record updated successfully',
@@ -98,7 +98,7 @@ export class BlockController {
   @Audit({
     tableName: 'mst_blocks',
     action: AuditAction.UPDATE,
-    description: 'Update a block record by ID',
+    description: 'Update a block record',
   })
   async update(@Param('id') id: number, @Body() payload: CreateBlockDto) {
     await this.blockService.update(id, payload, 1);
@@ -130,7 +130,7 @@ export class BlockController {
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Delete a block record by ID' })
+  @ApiOperation({ summary: 'Delete a block record' })
   @ApiResponse({
     status: 200,
     description: 'Master data block record deleted successfully',
@@ -138,7 +138,7 @@ export class BlockController {
   @Audit({
     tableName: 'mst_blocks',
     action: AuditAction.DELETE,
-    description: 'Delete a block record by ID',
+    description: 'Delete a block record',
   })
   async remove(@Param('id') id: number) {
     const result = await this.blockService.delete(id, 1);

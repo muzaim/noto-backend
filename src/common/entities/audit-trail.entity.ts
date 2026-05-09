@@ -1,8 +1,11 @@
+import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,6 +28,12 @@ export enum AuditAction {
 export class AuditTrail {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({
+    name: 'user_id',
+  })
+  user: UserEntity;
 
   @Column({ nullable: true })
   user_id: number;
