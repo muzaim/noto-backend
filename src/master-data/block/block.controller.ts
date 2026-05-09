@@ -141,7 +141,7 @@ export class BlockController {
     description: 'Delete a block record by ID',
   })
   async remove(@Param('id') id: number) {
-    const result = await this.blockService.remove(id, 1);
+    const result = await this.blockService.delete(id, 1);
     return {
       status_code: 200,
       message: 'Master data block record deleted successfully',

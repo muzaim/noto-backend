@@ -142,7 +142,7 @@ export class NoteController {
     description: 'Delete a note record by ID',
   })
   async remove(@Param('id') id: number) {
-    const result = await this.noteService.remove(id, 1);
+    const result = await this.noteService.delete(id, 1);
     return {
       status_code: 200,
       message: 'Master data note record deleted successfully',
