@@ -6,6 +6,8 @@ import { AppLogger } from 'src/common/logger/app-logger.service';
 import { BaseService } from 'src/common/services/base.service';
 import { NoteGateway } from 'src/lib/note.gateway';
 import { CreateNoteDTO } from './dto/create-note.dto';
+import { AuditTrailService } from 'src/common/services/audit-trail.service';
+import { AuditAction } from 'src/common/entities/audit-trail.entity';
 
 @Injectable()
 export class NoteService extends BaseService<NoteEntity> {
@@ -14,6 +16,7 @@ export class NoteService extends BaseService<NoteEntity> {
     private readonly noteRepository: Repository<NoteEntity>,
     protected readonly logger: AppLogger,
     private readonly noteGateway: NoteGateway,
+    private readonly auditTrailService: AuditTrailService,
   ) {
     super(noteRepository, logger);
     this.logger.setContext(NoteService.name);
@@ -47,6 +50,17 @@ export class NoteService extends BaseService<NoteEntity> {
     });
   }
 
+  async updateNote(id: number, payload: CreateNoteDTO, userId: number) {
+    await this.noteRepository.update(id, {
+      ...payload,
+      updatedBy: userId.toString(),
+    });
+
+    this.noteGateway.emitNotesUpdate();
+
+    return true;
+  }
+
   async delete(id: number, userId: number) {
     await this.noteRepository.update(id, {
       deletedBy: userId.toString(),
@@ -57,5 +71,19 @@ export class NoteService extends BaseService<NoteEntity> {
     this.noteGateway.emitNotesUpdate();
 
     return true;
+  }
+
+  async getAuditTrail(userId: number) {
+    const result = await this.auditTrailService.findByUser(userId, 1, 999999);
+
+    return {
+      ...result,
+
+      data: result.data.filter((item) =>
+        [AuditAction.CREATE, AuditAction.UPDATE, AuditAction.DELETE].includes(
+          item.action,
+        ),
+      ),
+    };
   }
 }

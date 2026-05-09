@@ -71,6 +71,12 @@ export class NoteController {
     };
   }
 
+  @Get('/audit-trail')
+  async getAuditTrail(@Req() req: RequestWithUser) {
+    console.log(req.user);
+    return this.noteService.getAuditTrail(req.user.userId);
+  }
+
   @Get('/options')
   @ApiOperation({ summary: 'Get active note options' })
   @ApiResponse({
@@ -123,7 +129,7 @@ export class NoteController {
     description: 'Update a note record by ID',
   })
   async update(@Param('id') id: number, @Body() payload: CreateNoteDTO) {
-    await this.noteService.update(id, payload, 1);
+    await this.noteService.updateNote(id, payload, 1);
     return {
       status_code: 200,
       message: 'Master data note record updated successfully',
