@@ -67,13 +67,20 @@ export class BlockService extends BaseService<BlcokEntity> {
   async reorder(payload: ReorderBlockDto) {
     for (const item of payload.items) {
       await this.blockRepository.update(item.id, {
+        orderIndex: item.orderIndex + 1000,
+      });
+    }
+
+    for (const item of payload.items) {
+      await this.blockRepository.update(item.id, {
         orderIndex: item.orderIndex,
       });
     }
 
+    this.noteGateway.emitNotesUpdate();
+
     return true;
   }
-
   async delete(id: number, userId: number) {
     await this.blockRepository.update(id, {
       deletedBy: userId.toString(),
