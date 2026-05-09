@@ -97,18 +97,6 @@ export class AuditTrailInterceptor implements NestInterceptor {
             newValues = responseData;
           }
 
-          // await this.auditService.createAuditLog({
-          //   user_id: user?.id,
-          //   username: user?.username,
-          //   table_name: auditMetadata.tableName,
-          //   record_id: recordId,
-          //   action: auditMetadata.action,
-          //   old_values: oldData ? JSON.stringify(oldData) : null,
-          //   new_values: newValues ? JSON.stringify(newValues) : null,
-          //   ip_address: request.ip,
-          //   user_agent: request.get('User-Agent'),
-          //   description: auditMetadata.description,
-          // });
           await this.auditService.createAuditLog({
             user_id: user?.userId,
 
