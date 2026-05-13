@@ -63,7 +63,7 @@ npm install
 Create a `.env` file
 
 ```env
-PORT=3000
+PORT=8181
 
 DB_HOST=localhost
 DB_PORT=5432
@@ -72,6 +72,11 @@ DB_PASSWORD=postgres
 DB_NAME=noto
 
 JWT_SECRET=secret
+```
+
+Or you can copy the `.env.example` file
+```bash
+cp .env.exampe .env
 ```
 
 ---
